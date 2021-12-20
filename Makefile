@@ -20,7 +20,7 @@ else
   ifeq ($(shell uname -s),Darwin)
     LIB_NAME=libzenohc.dylib
   else
-    LIB_NAME=libzenohc.so
+    LIB_NAME=libzenohc.a
   endif
 endif
 
@@ -55,9 +55,9 @@ examples: $(addprefix $(BUILD_DIR)/examples/, $(EXAMPLES))
 $(BUILD_DIR)/examples/%: examples/net/%.c
 	$(CC) -o $@ $< -I include -L $(BUILD_DIR) -lzenohc $(CFLAGS) $(LDFLAGS)
 
-install: lib include/zenoh.h include/zenoh/net.h
+install: include/zenoh.h include/zenoh/net.h
 	install -d $(DESTDIR)$(PREFIX)/lib/
-	install -m 755 $(BUILD_DIR)/$(LIB_NAME) $(DESTDIR)$(PREFIX)/lib/
+	install -m 755 $(BUILD_DIR)/libzenohc.* $(DESTDIR)$(PREFIX)/lib/
 	install -d $(DESTDIR)$(PREFIX)/include/
 	install -m 755 include/zenoh.h $(DESTDIR)$(PREFIX)/include/
 	install -d $(DESTDIR)$(PREFIX)/include/zenoh/
