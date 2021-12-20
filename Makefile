@@ -16,12 +16,19 @@
 # Library name
 ifeq ($(OS),Windows_NT)
   LIB_NAME=libzenohc.dll
+  LIB_NAME_STATIC=libzenohc.lib
 else
   ifeq ($(shell uname -s),Darwin)
     LIB_NAME=libzenohc.dylib
+    LIB_NAME_STATIC=libzenohc.a
   else
-    LIB_NAME=libzenohc.a
+    LIB_NAME=libzenohc.so
+    LIB_NAME_STATIC=libzenohc.a
   endif
+endif
+
+ifeq ($(TARGET),)
+  TARGET=x86_64-unknown-linux-gnu
 endif
 
 ifneq ($(TARGET),)
@@ -57,7 +64,8 @@ $(BUILD_DIR)/examples/%: examples/net/%.c
 
 install: include/zenoh.h include/zenoh/net.h
 	install -d $(DESTDIR)$(PREFIX)/lib/
-	install -m 755 $(BUILD_DIR)/libzenohc.* $(DESTDIR)$(PREFIX)/lib/
+	install -m 755 $(BUILD_DIR)/$(LIB_NAME) $(DESTDIR)$(PREFIX)/lib/
+	install -m 755 $(BUILD_DIR)/$(LIB_NAME_STATIC) $(DESTDIR)$(PREFIX)/lib/
 	install -d $(DESTDIR)$(PREFIX)/include/
 	install -m 755 include/zenoh.h $(DESTDIR)$(PREFIX)/include/
 	install -d $(DESTDIR)$(PREFIX)/include/zenoh/
