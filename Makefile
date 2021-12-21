@@ -64,8 +64,15 @@ $(BUILD_DIR)/examples/%: examples/net/%.c
 
 install: include/zenoh.h include/zenoh/net.h
 	install -d $(DESTDIR)$(PREFIX)/lib/
-	install -m 755 $(BUILD_DIR)/$(LIB_NAME) $(DESTDIR)$(PREFIX)/lib/
 	install -m 755 $(BUILD_DIR)/$(LIB_NAME_STATIC) $(DESTDIR)$(PREFIX)/lib/
+	install -d $(DESTDIR)$(PREFIX)/include/
+	install -m 755 include/zenoh.h $(DESTDIR)$(PREFIX)/include/
+	install -d $(DESTDIR)$(PREFIX)/include/zenoh/
+	install -m 755 include/zenoh/net.h $(DESTDIR)$(PREFIX)/include/zenoh/net.h
+
+install-shared: include/zenoh.h include/zenoh/net.h
+	install -d $(DESTDIR)$(PREFIX)/lib/
+	install -m 755 $(BUILD_DIR)/$(LIB_NAME) $(DESTDIR)$(PREFIX)/lib/
 	install -d $(DESTDIR)$(PREFIX)/include/
 	install -m 755 include/zenoh.h $(DESTDIR)$(PREFIX)/include/
 	install -d $(DESTDIR)$(PREFIX)/include/zenoh/
